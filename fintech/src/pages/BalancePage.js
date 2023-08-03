@@ -77,7 +77,7 @@ const BalancePage = () => {
     };
 
     axios(option).then(({ data }) => {
-      console.log(data.res_list);
+      console.log(data);
       setTransactionList(data.res_list);
     });
   };

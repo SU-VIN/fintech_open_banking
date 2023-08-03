@@ -5,6 +5,8 @@ import AuthResultPage from "./pages/AuthResultPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import BalacePage from "./pages/BalancePage";
+import QrCodePage from "./pages/QrCodePage";
+import QrReaderPage from "./pages/QrReaderPage";
 function App() {
   return (
     <BrowserRouter>
@@ -15,6 +17,8 @@ function App() {
           <Route path="/authResult" element={<AuthResultPage />}></Route>
           <Route path="/main" element={<MainPage />}></Route>
           <Route path="/balance" element={<BalacePage />}></Route>
+          <Route path="/qrCode" element={<QrCodePage />}></Route>
+          <Route path="/qrreader" element={<QrReaderPage />}></Route>
         </Routes>
       </div>
     </BrowserRouter>
