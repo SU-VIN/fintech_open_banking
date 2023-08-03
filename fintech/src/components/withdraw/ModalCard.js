@@ -85,6 +85,45 @@ const ModalCard = ({ bankName, fintechUseNo, tofintechno }) => {
   };
 
   const deposit = () => {
+    const two_legged =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJNMjAyMzAwNDQwIiwic2NvcGUiOlsib29iIl0sImlzcyI6Imh0dHBzOi8vd3d3Lm9wZW5iYW5raW5nLm9yLmtyIiwiZXhwIjoxNjk4ODIxNjkzLCJqdGkiOiI0ZGFmN2ZlNy03MmViLTRiNmYtOTQ2OS0wYzZlOWRmMDhlM2UifQ.3TtYtDOC2KcN60ozfvzugoDK2Z_9jYcaeyJRvkXzKLw";
+
+    const depositRequest = {
+      cntr_account_type: "N",
+      cntr_account_num: "200000000001",
+      wd_pass_phrase: "NONE",
+      wd_print_content: "환불금액",
+      name_check_option: "off",
+      tran_dtime: "20220812130000",
+      req_cnt: "1",
+      req_list: [
+        {
+          tran_no: "1",
+          bank_tran_id: "M202300440U008903011",
+          fintech_use_num: "120230044088951024630415",
+          print_content: "오픈서비스캐시백",
+          tran_amt: 10000,
+          req_client_name: "유관우",
+          req_client_fintech_use_num: "120230044088951024009186",
+          req_client_num: "HONGGILDONG1234",
+          transfer_purpose: "ST",
+        },
+      ],
+    };
+
+    const option = {
+      url: "/v2.0/transfer/deposit/fin_num",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json; charset=UTF-8",
+        Authorization: `Bearer ${two_legged}`,
+      },
+      data: depositRequest,
+    };
+
+    axios(option).then((data) => {
+      console.log(data);
+    });
     /**
      * #Last Work
      * 입금이체 작성해 주세요 !
