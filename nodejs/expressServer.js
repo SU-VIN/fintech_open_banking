@@ -1,6 +1,7 @@
 var express = require("express");
 let crypto = require("crypto");
 const mysql = require("mysql2");
+const axios = require("axios");
 const secret = "abcdefg";
 let jwt = require("jsonwebtoken");
 const auth = require("./lib/auth");
@@ -8,7 +9,7 @@ var app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 const connection = mysql.createConnection({
-  host: "localhost",
+  host: "127.0.0.1",
   user: "root",
   password: "0225",
   database: "fintech",
@@ -76,8 +77,44 @@ app.post("/login", function (req, res) {
   });
 });
 
+app.get("/account", auth, (req, res) => {
+  let { userId } = req.decoded;
+  const sql = "SELECT * FROM user WHERE id = ?";
+  connection.query(sql, [userId], function (err, result) {
+    const accesstoken = AESDecrypt(result[0].accesstoken);
+    const userSeqNo = result[0].userseqno;
+    console.log(accesstoken);
+    const sendData = {
+      user_seq_no: userSeqNo,
+    };
+    const option = {
+      method: "GET",
+      url: "https://testapi.openbanking.or.kr/v2.0/user/me",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        Authorization: `Bearer ${accesstoken}`,
+      },
+      params: sendData,
+    };
+    axios(option).then(({ data }) => {
+      res.json(data);
+    });
+  });
+});
+
 const hash = (input) => {
   return crypto.createHmac("sha256", secret).update(input).digest("hex");
+};
+
+const AESDecrypt = (plainTxt) => {
+  const algorithm = "aes-256-cbc";
+  const key = "tDAArT4tgoJra4AVYYUgt9Nvb9aImrTm";
+  const iv = "oNYgvfAAoAUb9mmD";
+  const cipher = crypto.createDecipheriv(algorithm, key, iv);
+  let decrypted = cipher.update(plainTxt, "base64", "utf8");
+  decrypted += cipher.final("utf-8");
+  console.log(decrypted);
+  return decrypted;
 };
 
 app.listen(4000);
