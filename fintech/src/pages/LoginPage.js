@@ -24,7 +24,7 @@ const LoginPage = () => {
         "Content-Type": "application/json",
       },
       data: {
-        id: id,
+        email: id,
         password: password,
       },
     };

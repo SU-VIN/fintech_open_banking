@@ -37,5 +37,7 @@ const AESDecrypt = (encrypt) => {
   console.log(decrypted);
 };
 AESDecrypt(encrypt);
+const mypwd = "Dlaqkcl430!";
+AESEncrypt(mypwd);
 // AESEncrypt("");
 // AESDecrypt("");
